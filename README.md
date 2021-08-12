@@ -267,3 +267,26 @@ https://www.example.com to continue with the wordpress installation
 I took the example from : https://zactyh.medium.com/hosting-wordpress-in-docker-with-ssl-2020-fa9391881f3
 
 check your grading at www.ssllabs.com www.securityheaders and wwww.keycdn.com (for http2)
+
+## there will be permission
+## use the following code to lock wordpress from over-written
+
+sudo find /var/lib/docker/volumes/ds_wordpress/_data/wp-content/themes/ -type f -exec chmod 644 {} +
+sudo find /var/lib/docker/volumes/ds_wordpress/_data/wp-content/themes/ -type d -exec chmod 755 {} +
+
+## this will lock the directory to 755 and file to 644
+## in the event you need to install new plugins, do the following
+
+sudo find /var/lib/docker/volumes/ds_wordpress/_data/wp-content/themes/ -type f -exec chmod 664 {} +
+sudo find /var/lib/docker/volumes/ds_wordpress/_data/wp-content/themes/ -type d -exec chmod 775 {} +
+
+## In the event this does not work:
+
+sudo docker exec -it (container id) /bin/bash
+go to /var/www/html
+chmod 777 -R wp-content/
+
+## once you had successfully installed the plugin then do the above 755 and 644
+
+
+
