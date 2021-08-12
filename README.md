@@ -10,7 +10,7 @@ mkdir -p /root/docker/letsencrypt
 
 cd /root/docker/letsencrypt
 
-docker run --rm -ti -v $PWD/log/:/var/log/letsencrypt/ -v $PWD/etc/:/etc/letsencrypt/ -p 80:80 deliverous/certbot certonly --standalone -d www.domain.com
+docker run --rm -ti -v $PWD/log/:/var/log/letsencrypt/ -v $PWD/etc/:/etc/letsencrypt/ -p 80:80 deliverous/certbot certonly --standalone -d www.example.com
 
 mkdir -p /var/ds/repo/nginx-conf-folder/ssl
 
@@ -28,7 +28,7 @@ server {
 
   listen [::]:80;
 
-   server_name mail.certiscalling.info;
+   server_name www.example.com;
 
    location ~ /.well-known/acme-challenge {
 
@@ -52,7 +52,7 @@ server {
 
   listen [::]:443 ssl http2;
 
-  server_name certiscalling.info www.certiscalling.info;
+  server_name www.example.com;
 
   index index.php index.html index.htm;
 
@@ -62,9 +62,9 @@ server {
 
   # add our paths for the certificates Certbot created 
 
-  ssl_certificate /etc/letsencrypt/live/mail.certiscalling.info/fullchain.pem;
+  ssl_certificate /etc/letsencrypt/live/www.example.com/fullchain.pem;
 
-  ssl_certificate_key /etc/letsencrypt/live/mail.certiscalling.info/privkey.pem;
+  ssl_certificate_key /etc/letsencrypt/live/www.example.com/privkey.pem;
 
   ssl_protocols TLSv1.2 TLSv1.3;
 
@@ -252,7 +252,9 @@ services:
 
 create .env file (/var/ds)
 
-MYSQL_ROOT_PASSWORD=1234password MYSQL_USER=wordpress MYSQL_PASSWORD=1234password
+MYSQL_ROOT_PASSWORD=1234password 
+MYSQL_USER=wordpress 
+MYSQL_PASSWORD=1234password
 
 cd /var/ds
 
